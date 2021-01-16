@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>我是标题</title>
+		<script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	<body>
+		<h1>Vue入门测试</h1>
+
+		<div id="app">
+			<h4>
+				{{ message }}
+			</h4>
+			<span v-bind:title="data">
+				鼠标悬停几秒钟查看此处动态绑定的提示信息！
+			</span>
+
+			<p v-if="seen">现在你看到我了</p>
+
+			<li v-for="todo in todos">
+				{{ todo.text }}
+			</li>
+
+			<div v-if="type === 'A'">A</div>
+			<div v-else-if="type === 'B'">B</div>
+			<div v-else-if="type === 'C'">C</div>
+			<div v-else>Not A B C is't {{ type }}</div>
+
+			<h2 v-show="seen">有Dom元素在，只是通过css属性改变显示或者隐藏</h2>
+
+			<button @click="reverseMessage()">反转消息</button>
+			<br />
+			<input v-model="message" />
+			<br />
+			<textarea style="margin-top: 30px;" v-model="message" placeholder="输入多行"></textarea>
+
+			<div>
+				<ol>
+					<todo-item v-for="todo in todos" v-bind:todo="todo" v-bind:key="todo.id"></todo-item>
+				</ol>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			Vue.component('todo-item', {
+				props: ['todo'],
+				template: '<li>{{ todo.text }}</li>'
+			})
+
+			var app = new Vue({
+				el: "#app",
+				data: {
+					type: "B",
+					message: "Hello Vue.js",
+					data: '传过来的数据---》页面加载于。。' + new Date().toLocaleDateString(),
+					seen: true,
+					todos: [{
+							id: 1,
+							text: '第一行'
+						},
+						{
+							id: 2,
+							text: '第二行'
+						},
+						{
+							id: 3,
+							text: '第三行'
+						},
+						{
+							id: 4,
+							text: '第四行啊啊啊'
+						}
+					]
+				},
+				methods: {
+					reverseMessage: function() {
+						this.message = this.message.split('').reverse().join('')
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
