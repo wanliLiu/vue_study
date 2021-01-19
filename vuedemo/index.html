@@ -48,7 +48,7 @@
 				template: '<li>{{ todo.text }}</li>'
 			})
 
-			var app = new Vue({
+			var vm = new Vue({
 				el: "#app",
 				data: {
 					type: "B",
@@ -79,6 +79,14 @@
 					}
 				}
 			})
+			
+			vm.$watch('message',function(newVal,oldVal){
+				console.log("newVal:-" +newVal + "Oldval:-" + oldVal)
+			})
+			
+			setTimeout(function(){
+				vm.message = "我通过延时改变了-----"
+			},1000)
 		</script>
 	</body>
 </html>
