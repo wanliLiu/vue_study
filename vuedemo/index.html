@@ -4,11 +4,48 @@
 		<meta charset="utf-8">
 		<title>我是标题</title>
 		<script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 	</head>
 	<body>
 		<h1>Vue入门测试</h1>
 
 		<div id="app">
+
+			<div style="margin-bottom: 20px; margin-top: 10px;">
+				<span v-for="n in 100">
+					{{ n }}
+				</span>
+			</div>
+
+			<template v-if="loginType === 'username'">
+				<label>UserName</label>
+				<input placeholder="Enter your Name" key="useNmae" />
+			</template>
+			<template v-else>
+				<label>Email</label>
+				<input placeholder="Enter your email address" key="useUmeail" />
+			</template>
+			<br />
+			<button @click="changeLoginType()">修改登录方式</button>
+
+			<div id="ask_example" class="static" v-bind:class="{ active: isActive, 'text-danger': hassError }">
+				<p>
+					Ask a yes/no questioin:
+					<input v-model="question" />
+				</p>
+
+				<p>{{ answer }}</p>
+			</div>
+
+			<div v-bind:style="{ color : activeColor,fontSize:fontSize + 'px' }">
+				Say hi
+			</div>
+
+			<div :style="styleObject">
+				Hello there
+			</div>
+
 			<h4>
 				{{ message }}
 			</h4>
@@ -16,10 +53,37 @@
 				鼠标悬停几秒钟查看此处动态绑定的提示信息！
 			</span>
 
+			<div style="margin-top: 20px;">
+				<a v-bind:href="url" target="_blank">
+					<h1>模板语法</h1>
+				</a>
+			</div>
+
+			<p>javascript 运算符号 {{ number + 12 }}</p>
+			<h3>{{ number + 20 > 20 ? 'Yes,bigger than 20' : 'No' }}</h3>
+
+			<div v-bind:class="color">test...</div>
+
+
+			<p> Use {{ rawhtml }} </p>
+			<p v-html="rawhtml"></p>
+
 			<p v-if="seen">现在你看到我了</p>
 
-			<li v-for="todo in todos">
-				{{ todo.text }}
+			<div id="todo-list-example">
+				<form v-on:submit.prevent="addNewTodo()">
+					<label for="new-todo">Add a todo</label>
+					<input v-model="newTodoText" id="new-todo" placeholder="E.g. Feed the cat" />
+					<button>Add</button>
+				</form>
+
+				<ul>
+					<li is="todo-item" v-for="(todo,index) in todos" v-bind:todo="todo" v-bind:key="todo.id" v-on:remove="todos.splice(index,1)"></li>
+				</ul>
+			</div>
+
+			<li v-for="(todo,index) in todos" :key="todo.id">
+				<span v-html="rawhtml"></span>--->{{ todo.text }}---{{ index }}
 			</li>
 
 			<div v-if="type === 'A'">A</div>
@@ -40,18 +104,43 @@
 					<todo-item v-for="todo in todos" v-bind:todo="todo" v-bind:key="todo.id"></todo-item>
 				</ol>
 			</div>
+
+			<ul id="v-for-object" class="demo">
+				<li v-for="(value,key,index) in styleObject">
+					{{ key }} : {{ value }}---{{ index }}
+				</li>
+			</ul>
 		</div>
+
+
 
 		<script type="text/javascript">
 			Vue.component('todo-item', {
 				props: ['todo'],
-				template: '<li>{{ todo.text }}</li>'
+				template: '\<li>{{ todo.text }} <button v-on:click="$emit(\'remove\')">移除</button></li>'
 			})
+
+			var debouncedGetAnswer = function() {}
 
 			var vm = new Vue({
 				el: "#app",
 				data: {
+					loginType: 'username',
+					styleObject: {
+						color: 'blue',
+						fontSize: '20px',
+						background: 'red'
+					},
+					activeColor: 'blue',
+					fontSize: 20,
+					isActive: true,
+					hassError: true,
+					answer: 'I cannot give you an answer until you ask a question!',
+					question: '',
+					url: "https://cn.vuejs.org/v2/guide/syntax.html",
+					number: 10,
 					type: "B",
+					color: 'blue',
 					message: "Hello Vue.js",
 					data: '传过来的数据---》页面加载于。。' + new Date().toLocaleDateString(),
 					seen: true,
@@ -71,22 +160,88 @@
 							id: 4,
 							text: '第四行啊啊啊'
 						}
-					]
+					],
+					nextTodoId: 5,
+					newTodoText: '',
+					rawhtml: '<span style = "color:blue"> this is shoule be red</span>'
 				},
 				methods: {
+					addNewTodo: function() {
+						this.todos.push({
+							id: this.nextTodoId++,
+							text: this.newTodoText,
+						})
+						this.newTodoText = ''
+					},
+					changeLoginType: function() {
+						this.loginType = this.loginType === 'username' ? 'userEmial' : 'username'
+					},
 					reverseMessage: function() {
 						this.message = this.message.split('').reverse().join('')
+					},
+					getAnswer: function() {
+						if (this.question.indexOf('?') === -1) {
+							this.answer = 'Questions usually contain a question mark. ;-)'
+							return
+						}
+
+						this.answer = 'Thingking....'
+						var vm = this
+						axios.get('https://yesno.wtf/api')
+							.then(function(response) {
+								vm.answer = _.capitalize(response.data.answer)
+							})
+							.catch(function(error) {
+								vm.answer = 'Error! Could not reach the API. ' + error
+							})
 					}
+				},
+				watch: {
+					question: function(newQuestion, oldQuestion) {
+						this.answer = 'Waiting for you to stop typing...'
+						this.debouncedGetAnswer()
+					}
+				},
+				created: function() {
+					this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
 				}
 			})
-			
-			vm.$watch('message',function(newVal,oldVal){
-				console.log("newVal:-" +newVal + "Oldval:-" + oldVal)
+
+			vm.$watch('message', function(newVal, oldVal) {
+				console.log("newVal:-" + newVal + "Oldval:-" + oldVal)
 			})
-			
-			setTimeout(function(){
+
+			console.log('Vue版本：' + Vue.version)
+			setTimeout(function() {
 				vm.message = "我通过延时改变了-----"
-			},1000)
+			}, 3000)
 		</script>
+
+		<style type="text/css">
+			.red {
+				color: red;
+			}
+
+			.blue {
+				color: blue;
+				font-size: 40px;
+			}
+
+			.static {
+				text-align: center;
+				padding-top: 40px;
+				padding-left: 40px;
+				padding-bottom: 40px;
+				background: #FF0000;
+			}
+
+			.active {
+				font-size: 20px;
+			}
+
+			.text-danger {
+				color: blue;
+			}
+		</style>
 	</body>
 </html>
