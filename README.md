@@ -1,7 +1,7 @@
 # vue_study
 vue学习记录,从[教程][1]这里一步一步开始
 
-## 学习流程
+# Vue基础
 
 记录自己学习过的额东西，下次从这里开始继续学习
 
@@ -39,10 +39,37 @@ vue学习记录,从[教程][1]这里一步一步开始
 	
 	主要是v-on的一些操作处理，按键点击，事件修饰符这个，后面还得在研究一些，目前对这个还不是很了解
 
-* [表单输入绑定](https://cn.vuejs.org/v2/guide/forms.html)---
+* [表单输入绑定](https://cn.vuejs.org/v2/guide/forms.html)---done
+
+	主要讲述v-model结合`input,textarea select`做了一系列介绍，比如文本、多行文本、复选框、单选按钮、选择框等的使用，以及其值绑定
+	
+* [组件基础](https://cn.vuejs.org/v2/guide/components.html)---done
+   
+   组件的定义、注册、插槽、动态组件、数据绑定等初步简单介绍，组件上使用`v-model`后面可以在继续深入一下,[解析 DOM 模板时的注意事项][2]后面再注意下下
+
+# 深入了解组件
+
+	进一步学习
+	
+* [组件注册](https://cn.vuejs.org/v2/guide/components-registration.html) ---done
+	
+	组件局部注册、全局自动注册、组件命名规范，以及后面使用webpack方式的使用初探
+	
+* [Prop](https://cn.vuejs.org/v2/guide/components-props.html)----done
+
+	组件的值传入，Prop，传入的数据类型，可以用数组传递字符串，也可以用对象传递来验证数据类型，包括默认值，数据类型、校验等，[禁用 Attribute 继承][3]后面还要在研究下
+	
+* [自定义事件](https://cn.vuejs.org/v2/guide/components-custom-events.html)---done
+	
+	自定义事名称小写，自定义组件的v-model操作（value,input)为默认属性和事件，Vue的$listeners可以将所有的事件监听器指向这个组件的某个特定的子元素,后面研究再看[将原生事件绑定到组件][4]
+
+* [插槽](https://cn.vuejs.org/v2/guide/components-slots.html)---
 
 
 
 
 
 [1]: https://cn.vuejs.org/v2/guide/
+[2]: https://cn.vuejs.org/v2/guide/components.html#%E8%A7%A3%E6%9E%90-DOM-%E6%A8%A1%E6%9D%BF%E6%97%B6%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9
+[3]: https://cn.vuejs.org/v2/guide/components-props.html#%E7%A6%81%E7%94%A8-Attribute-%E7%BB%A7%E6%89%BF
+[4]: https://cn.vuejs.org/v2/guide/components-custom-events.html#%E5%B0%86%E5%8E%9F%E7%94%9F%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%88%B0%E7%BB%84%E4%BB%B6

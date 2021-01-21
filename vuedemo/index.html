@@ -12,6 +12,28 @@
 
 		<div id="app">
 
+			<button-counter></button-counter><br />
+			<input type="checkbox" id="checkbox" v-model="seen" />
+			<label for="checkbox">{{ seen }}</label>
+
+			<div>
+				<select v-model="seen">
+					<option disabled value="">请选择</option>
+					<option>A</option>
+					<option>B</option>
+					<option>C</option>
+				</select>
+				<span>Selected : {{ seen }}</span>
+			</div>
+
+			<div>
+				<p> 两个嵌套循环</p>
+				<ul v-for="set in sets">
+					<li v-for="n in even(set)">{{ n }}</li>
+					<p>------------------------------</p>
+				</ul>
+			</div>
+
 			<div style="margin-bottom: 20px; margin-top: 10px;">
 				<span v-for="n in 100">
 					{{ n }}
@@ -120,6 +142,15 @@
 				template: '\<li>{{ todo.text }} <button v-on:click="$emit(\'remove\')">移除</button></li>'
 			})
 
+			Vue.component('button-counter', {
+				data: function() {
+					return {
+						count: 1
+					}
+				},
+				template: '<button v-on:click="count++">You Clicked me {{ count }} times.</button>'
+			})
+
 			var debouncedGetAnswer = function() {}
 
 			var vm = new Vue({
@@ -131,6 +162,10 @@
 						fontSize: '20px',
 						background: 'red'
 					},
+					sets: [
+						[1, 2, 3, 4, 5],
+						[6, 7, 8, 9, 10]
+					],
 					activeColor: 'blue',
 					fontSize: 20,
 					isActive: true,
@@ -166,12 +201,22 @@
 					rawhtml: '<span style = "color:blue"> this is shoule be red</span>'
 				},
 				methods: {
-					addNewTodo: function() {
-						this.todos.push({
-							id: this.nextTodoId++,
-							text: this.newTodoText,
+					even: function(numbers) {
+						return numbers.filter(function(number) {
+							return number % 2 == 0
 						})
-						this.newTodoText = ''
+					},
+					addNewTodo: function() {
+						if (this.newTodoText) {
+							this.todos.push({
+								id: this.nextTodoId++,
+								text: this.newTodoText,
+							})
+							this.newTodoText = ''
+						} else {
+							alert("输入不能为空")
+						}
+
 					},
 					changeLoginType: function() {
 						this.loginType = this.loginType === 'username' ? 'userEmial' : 'username'
