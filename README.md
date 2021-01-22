@@ -63,9 +63,25 @@ vue学习记录,从[教程][1]这里一步一步开始
 	
 	自定义事名称小写，自定义组件的v-model操作（value,input)为默认属性和事件，Vue的$listeners可以将所有的事件监听器指向这个组件的某个特定的子元素,后面研究再看[将原生事件绑定到组件][4]
 
-* [插槽](https://cn.vuejs.org/v2/guide/components-slots.html)---
+* [插槽](https://cn.vuejs.org/v2/guide/components-slots.html)---done
+  
+  各种插槽，具名插槽，动态插槽名、插槽使用子组件的属性等等，[解构插槽 Prop]()还不太了解
+  
+* [动态组件 & 异步组件](https://cn.vuejs.org/v2/guide/components-dynamic-async.html)---done
 
+	动态组件主要通过`<component></compone>`的`is`来做的，而具体的通过通过计算属性来动态指定组件，`keep-alive`用来保存组件实例
+	[异步组件][6]后面再来了解，目前理解起来有点吃力
+	
+* [处理边界情况](https://cn.vuejs.org/v2/guide/components-edge-cases.html)---done
+	
+	这节基本没有看到，后面再说
+	
+	
+# 过渡 & 动画
 
+* [进入/离开 & 列表过渡](https://cn.vuejs.org/v2/guide/transitions.html)---done
+ 
+	初步了解，后面还是要看下
 
 
 
@@ -73,3 +89,5 @@ vue学习记录,从[教程][1]这里一步一步开始
 [2]: https://cn.vuejs.org/v2/guide/components.html#%E8%A7%A3%E6%9E%90-DOM-%E6%A8%A1%E6%9D%BF%E6%97%B6%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9
 [3]: https://cn.vuejs.org/v2/guide/components-props.html#%E7%A6%81%E7%94%A8-Attribute-%E7%BB%A7%E6%89%BF
 [4]: https://cn.vuejs.org/v2/guide/components-custom-events.html#%E5%B0%86%E5%8E%9F%E7%94%9F%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%88%B0%E7%BB%84%E4%BB%B6
+[5]: https://cn.vuejs.org/v2/guide/components-slots.html#%E8%A7%A3%E6%9E%84%E6%8F%92%E6%A7%BD-Prop
+[6]: https://cn.vuejs.org/v2/guide/components-dynamic-async.html)

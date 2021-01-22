@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>我是标题</title>
-		<script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+		<script src="../vue.js" type="text/javascript" charset="UTF-8"></script>
 		<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 	</head>
@@ -12,7 +12,14 @@
 
 		<div id="app">
 
-			<button-counter></button-counter><br />
+			<button-counter>
+				<template #input>
+					具名插槽
+				</template> -->
+				<template v-slot:default>
+					<h1> 改吧来的说的欧舒丹</h1>
+				</template>
+			</button-counter><br />
 			<input type="checkbox" id="checkbox" v-model="seen" />
 			<label for="checkbox">{{ seen }}</label>
 
@@ -100,12 +107,24 @@
 				</form>
 
 				<ul>
-					<li is="todo-item" v-for="(todo,index) in todos" v-bind:todo="todo" v-bind:key="todo.id" v-on:remove="todos.splice(index,1)"></li>
+					<todo-item v-for="(todo,index) in todos" v-bind:todo="todo" v-bind:key="todo.id" v-on:remove="todos.splice(index,1)">
+						<template v-if="index % 2 === 0" #todo>
+							Again 额外添加的---> {{todo.id}}
+						</template>
+					</todo-item>
 				</ul>
 			</div>
 
+			<div>
+				<todo-items v-bind:todos="todos">
+					<template  #todo="{todo}" >
+						<span v-if="todo.id % 2 === 0">修改---》{{ todo.id }}: {{ todo.text}}</span>
+					</template>
+				</todo-items>
+			</div>
+
 			<li v-for="(todo,index) in todos" :key="todo.id">
-				<span v-html="rawhtml"></span>--->{{ todo.text }}---{{ index }}
+				<span v-html="rawhtml"></span>-{{ todo.text }}---{{ index }}
 			</li>
 
 			<div v-if="type === 'A'">A</div>
@@ -137,9 +156,39 @@
 
 
 		<script type="text/javascript">
+			Vue.component('todo-items', {
+				props: {
+					todos: Array
+				},
+				template: `
+				<ul>
+					<li v-for="todo in todos" 
+						v-bind:key="todo.id">
+							<slot name="todo" 
+								v-bind:todo="todo">
+									{{ todo.text}}
+							</slot>
+					</li>
+				</ul>
+				`
+			})
+
 			Vue.component('todo-item', {
 				props: ['todo'],
-				template: '\<li>{{ todo.text }} <button v-on:click="$emit(\'remove\')">移除</button></li>'
+				template: `
+					<li>
+						{{ todo.text }} ----》 
+						<slot name="todo" 
+							v-bind:todo="todo"> 
+								后备内容：{{ todo.text}}
+						</slot>  
+						-----> 
+						<button 
+							v-on:click="$emit(\'remove\')">
+							移除
+						</button>
+					</li>
+				`
 			})
 
 			Vue.component('button-counter', {
@@ -148,7 +197,20 @@
 						count: 1
 					}
 				},
-				template: '<button v-on:click="count++">You Clicked me {{ count }} times.</button>'
+				template: `
+					<div>
+						<button 
+							v-on:click="count++">
+								You Clicked me {{ count }} times.
+						</button>
+						<slot name="input">
+							<h4>我是后备内容</h4>
+						</slot>
+						<slot>
+							<h1>后备内容</h1>
+						</slot>
+					</div>
+				`
 			})
 
 			var debouncedGetAnswer = function() {}
