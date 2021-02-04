@@ -12,6 +12,7 @@
 
 		<div id="app">
 
+			<render-test></render-test>
 			<button-counter>
 				<template #input>
 					具名插槽
@@ -49,7 +50,7 @@
 
 			<template v-if="loginType === 'username'">
 				<label>UserName</label>
-				<input placeholder="Enter your Name" key="useNmae" />
+				<input v-focus placeholder="Enter your Name" key="useNmae" />
 			</template>
 			<template v-else>
 				<label>Email</label>
@@ -117,7 +118,7 @@
 
 			<div>
 				<todo-items v-bind:todos="todos">
-					<template  #todo="{todo}" >
+					<template #todo="{todo}">
 						<span v-if="todo.id % 2 === 0">修改---》{{ todo.id }}: {{ todo.text}}</span>
 					</template>
 				</todo-items>
@@ -213,10 +214,46 @@
 				`
 			})
 
+			Vue.component('render-test', {
+				render: function(createElement) {
+
+					return createElement('div', [
+						'布局和Android的一样',
+						createElement('h2', {
+							style: {
+								color: 'red',
+								fontSize: '20px'
+							}
+						}, "一种是通过标签书写"),
+						createElement('h3', "另外一种就是通过代码生成"),
+						createElement('h1', '我是代码生成的哦'),
+					])
+				}
+			})
+
+			var mixin = {
+				methods: {
+					foo: function() {
+						console.log('foo')
+					},
+					conflicting: function() {
+						console.log('from mixin')
+					}
+				}
+			}
+
 			var debouncedGetAnswer = function() {}
 
 			var vm = new Vue({
 				el: "#app",
+				mixins: [mixin],
+				directives: {
+					focus: {
+						inserted: function(el) {
+							el.focus()
+						}
+					}
+				},
 				data: {
 					loginType: 'username',
 					styleObject: {
@@ -263,6 +300,12 @@
 					rawhtml: '<span style = "color:blue"> this is shoule be red</span>'
 				},
 				methods: {
+					bar: function() {
+						console.log('bar')
+					},
+					conflicting: function() {
+						console.log('from self')
+					},
 					even: function(numbers) {
 						return numbers.filter(function(number) {
 							return number % 2 == 0
@@ -317,6 +360,11 @@
 			vm.$watch('message', function(newVal, oldVal) {
 				console.log("newVal:-" + newVal + "Oldval:-" + oldVal)
 			})
+
+
+			vm.bar()
+			vm.foo()
+			vm.conflicting()
 
 			console.log('Vue版本：' + Vue.version)
 			setTimeout(function() {

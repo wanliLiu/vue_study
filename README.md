@@ -82,8 +82,34 @@ vue学习记录,从[教程][1]这里一步一步开始
 * [进入/离开 & 列表过渡](https://cn.vuejs.org/v2/guide/transitions.html)---done
  
 	初步了解，后面还是要看下
+	
+* [状态过渡](https://cn.vuejs.org/v2/guide/transitioning-state.html) --- 
+  
+  目前也看不懂
+  
+  
+# 可复用性 & 组合
 
+* [混入](https://cn.vuejs.org/v2/guide/mixins.html)---done
+   
+   跟kotlin中的mixin一样，都是增强，组件功能,跟组件注册一样，也分全局注入和局部注入，不同的加入，相同的组件的优先
+ 
+* [自定义指令](https://cn.vuejs.org/v2/guide/custom-directive.html)---done
+	
+	根据实际情况自定义相应的指令，也分全局和局部指令，自定义指令有相应的钩子函数，比如bind、inserted、update、componentUpdated、unbind，已经相应的参数说明
+	
+* [渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)---done
 
+	渲染函数其实实现的就是通过代码书写布局，标签名，标签的熟悉，具体的children等，JSX使其render看起来更接近真实，
+	
+* [插件](https://cn.vuejs.org/v2/guide/plugins.html)---done
+
+	就是第三方库
+	
+* [过滤器](https://cn.vuejs.org/v2/guide/filters.html)
+
+	和自定义命令、组件、混入一样，也是通过注册来实现，也分全局和局部， 具体使用`{{ message | fliterA}}` fliterA就是一个函数，通过Vue.filter来注册的
+	
 
 [1]: https://cn.vuejs.org/v2/guide/
 [2]: https://cn.vuejs.org/v2/guide/components.html#%E8%A7%A3%E6%9E%90-DOM-%E6%A8%A1%E6%9D%BF%E6%97%B6%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9
